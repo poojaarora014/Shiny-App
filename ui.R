@@ -1,6 +1,10 @@
 #################################################
-#               Basic Text Analysis             #
+#   Shiny App around the UDPipe NLP workflow    #
 #################################################
+
+#Team Name:
+# Pooja Arora (RollNo. 11810083)
+# Vikash Singh Negi (RollNo. 11810048)
 
 library(udpipe)
 library(textrank)
