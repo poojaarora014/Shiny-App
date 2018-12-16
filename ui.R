@@ -2,17 +2,17 @@
 #               Basic Text Analysis             #
 #################################################
 
-library(shiny)
-library(text2vec)
-library(tm)
-library(tokenizers)
+library(udpipe)
+library(textrank)
+library(lattice)
+library(igraph)
+library(ggraph)
+library(ggplot2)
 library(wordcloud)
-library(slam)
-library(stringi)
-library(magrittr)
-library(tidytext)
-library(dplyr)
-library(tidyr)
+library(stringr)
+library(igraph)
+library(ggraph)
+library(ggplot2)
 
 
 # Define UI for application that draws a histogram
@@ -29,27 +29,12 @@ shinyUI(fluidPage(
       #Model file upload option in UI 
       fileInput("modelFile", "Upload trained udpipe model for different languages"),
       #Check box group to select the 
-      checkboxGroupInput("xpos", label = h3("Part-of-Speech Tags (XPOS)"), 
-                         choices = list("Adjective (JJ)" = "adjective", "Noun(NN)2" = "noun", 
+      checkboxGroupInput("post", label = h3("Part-of-Speech Tags (XPOS)"), 
+                         choices = list("Adjective (JJ)" = "adjective", "Noun(NN)" = "noun", 
                                         "Proper Noun (NNP)" = "properNoun", "Adverb (RB)"= "adverb", "Verb (VB)" ="verb"),
                          selected = c("adjective","noun", "properNoun")),
                          hr(),
                         fluidRow(column(3, verbatimTextOutput("value"))),
-
-      textInput("stopw", ("Enter stop words separated by comma(,)"), value = "will,can"),
-      
-      selectInput("ws", "Weighing Scheme", 
-                  c("weightTf","weightTfIdf"), selected = "weightTf"), # weightTf, weightTfIdf, weightBin, and weightSMART.
-      
-      sliderInput("freq", "Minimum Frequency in Wordcloud:", min = 0,  max = 100, value = 2),
-      
-      sliderInput("max",  "Maximum Number of Words in Wordcloud:", min = 1,  max = 300,  value = 50),  
-      
-      numericInput("nodes", "Number of Central Nodes in co-occurrence graph", 4),
-      numericInput("connection", "Number of Max Connection with Central Node", 5),
-      
-      textInput("concord.word",('Enter word for which you want to find concordance'),value = 'good'),
-      sliderInput("window",'Concordance Window',min = 2,max = 100,5),
       
       submitButton(text = "Apply Changes", icon("refresh"))
     ),
@@ -70,18 +55,10 @@ shinyUI(fluidPage(
                            p('To use this app, click on', 
                              span(strong("Upload data (csv file with header)")),
                              'and uppload the csv data file. You can also change the number of clusters to fit in k-means clustering')),
-                  tabPanel("TDM & Word Cloud",
-                           verbatimTextOutput("dtmsize"),
-                           verbatimTextOutput("dtmsummary"),
-                           br(),
-                           br(),
-                           h4("Word Cloud"),
-                           plotOutput("wordcloud",height = 700, width = 700),
-                           h4("Weights Distribution of Wordcloud"),
-                           verbatimTextOutput("dtmsummary1")),
-                  tabPanel("Term Co-occurrence",
-                           plotOutput("cog.dtm",height = 700, width = 700)
-                  )
+
+                  tabPanel("Cooccurance",
+
+                           plotOutput("cooccurance"))
 
                   
       ) # end of tabsetPanel

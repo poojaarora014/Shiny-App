@@ -12,118 +12,53 @@ library(shiny)
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   set.seed=2092014  
+  options(shiny.maxRequestSize=30*1024^2)
   
-  dataset<-reactive({
-    if(is.null(input$file)){  #Locate the input file
-        return (NULL)
-    } else {
+  Dataset <- reactive({
+    if (is.null(input$file)) {return(NULL)}
+    else {
       Document = readLines(input$file$datapath)
-      Doc.id=seq(1:length(Document))
-      calib=data.frame(Doc.id,Document)
-      return(calib)}
-
+      return(Document)}
   })
   
-  dtm_tcm =  reactive({
+  dataset1 <- reactive({
+    if (is.null(input$modelFile)) {return(NULL)}
+    else {
+      #  datasetClean  =  str_replace_all(dataset, "<.*?>", "")
+      model = udpipe_load_model(file=input$modelFile$datapath)
+      x <- udpipe_annotate(model, x = as.character(Dataset())) 
+      x <- as.data.frame(x)
+      return(x)}
+  })
+  
+  
+
+  output$cooccurance <- renderPlot({
+      inputSelection <- input$post
+      inputText <-  as.character(Dataset())
+     
+      model = udpipe_load_model(file=input$modelFile$datapath)
+      x <- udpipe_annotate(model, x = inputText, doc_id = seq_along(inputText))
+      x <- as.data.frame(x)
+
+    nokia_cooc <- cooccurrence(   
+      x <- subset(x, x$xpos %in% c("NN", "JJ")), 
+      term = "lemma", 
+      group = c("doc_id", "paragraph_id", "sentence_id")) 
+    wordnetwork <- head(nokia_cooc, 50)
+    wordnetwork <- igraph::graph_from_data_frame(wordnetwork) 
     
-    textb = dataset()$Document
-    ids = dataset()$Doc.id
-    
-    dtm.tcm = dtm.tcm.creator(text = textb,
-                              id = ids,
-                              std.clean = TRUE,
-                              std.stop.words = TRUE,
-                              stop.words.additional = unlist(strsplit(input$stopw,",")),
-                              bigram.encoding = TRUE,
-                              # bigram.min.freq = 20,
-                              min.dtm.freq = input$freq,
-                              skip.grams.window = 10)
-    if (input$ws == "weightTf") {
-      dtm = as.matrix(dtm.tcm$dtm)  
-    } 
-    
-    if (input$ws == "weightTfIdf"){
-      model_tfidf = TfIdf$new()
-      dtm = as.matrix(model_tfidf$fit_transform(dtm.tcm$dtm))
+    ggraph(wordnetwork, layout = "fr") +  
       
-      tempd = dtm*0
-      tempd[dtm > 0] = 1
-      dtm = dtm + tempd
-    }  
+      geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "orange") +  
+      geom_node_text(aes(label = name), col = "darkgreen", size = 4) +
+      
+      theme_graph(base_family = "Arial Narrow") +  
+      theme(legend.position = "none") +
+      
+      labs(title = "Cooccurrences within 3 words distance", subtitle = "Nouns & Adjective")
     
-    # tcm = dtm.tcm$tcm
-    dtm_tcm_obj = list(dtm = dtm)#, tcm = tcm)
-  })
-  
-  wordcounts = reactive({
-    
-    return(dtm.word.count(dtm_tcm()$dtm))
-    
-  }) 
-  
-  output$wordcloud <- renderPlot({
-    tsum = wordcounts()
-    tsum = tsum[order(tsum, decreasing = T)]
-    dtm.word.cloud(count = tsum,max.words = input$max,title = 'Term Frequency Wordcloud')
     
   })
   
-  output$cog.dtm <- renderPlot({
-    
-    distill.cog.tcm(mat1=dtm_tcm()$dtm, # input TCM MAT
-                    mattype = "DTM",
-                    title = "COG from DTM Adjacency", # title for the graph
-                    s=input$nodes,    # no. of central nodes
-                    k1 = input$connection)  # No. of Connection with central Nodes
-  })
-  
-  output$dtmsummary  <- renderPrint({
-    if (is.null(input$file)) {return(NULL)}
-    else {
-      sortedobj = dtm_tcm()$dtm[,order(wordcounts(), decreasing = T)]
-      (t(sortedobj[1:10,1:10]))
-    }
-  })
-  
-  output$dtmsize  <- renderPrint({
-    if (is.null(input$file)) {return(NULL)}
-    else {
-      size = dim(t(dtm_tcm()$dtm))
-      dtm_size = paste("Term Document Matrix (TDM) size is ", size[1]," X ", size[2],". Below are the first 10 docs X top 10 tokens")
-      return(dtm_size)
-    }
-  })
-  
-  output$dtmsummary1  <- renderPrint({
-    if (is.null(input$file)) {return(NULL)}
-    else {
-      data.frame(Counts = wordcounts()[order(wordcounts(), decreasing = T)][1:input$max])
-    }
-  })
-  
-  
-  output$concordance = renderPrint({
-    a0 = concordance.r(dataset()$Document,input$concord.word, input$window)
-    concordance = a0$concordance
-    concordance
-  })
-  
-  output$bi.grams = renderPrint({
-    a0 = bigram.collocation(dataset()$Document)
-    a0 = a0[order(a0$n, decreasing = T),]
-    if (nrow(a0) > 100){
-      a1 = a0[1:100,]
-    } else {
-      a1 = a0
-    }
-    a1
-  })
-  
-  output$downloadData1 <- downloadHandler(
-    filename = function() { "Nokia_Lumia_reviews.txt" },
-    content = function(file) {
-      writeLines(readLines("data/Nokia_Lumia_reviews.txt"), file)
-    }
-  )
-
 })
