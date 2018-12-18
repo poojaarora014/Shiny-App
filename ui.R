@@ -56,7 +56,7 @@ shinyUI(fluidPage(
       fileInput("file", "Upload Input Text File(.txt format)"),
      
        #Model file upload option in UI 
-      fileInput("modelFile", "Upload trained udpipe model for english languages"),
+      fileInput("modelFile", "Upload trained udpipe model"),
 
       #Check box group to select the 
       checkboxGroupInput("post", label = h3("Part-of-Speech Tags (XPOS)"), 
@@ -88,9 +88,12 @@ shinyUI(fluidPage(
                            br(),
                            h4('How to use this App'),
                            p('To use this app, click on', 
-                             span(strong("Upload data (text file)")),
-                             'and uppload the csv data file. You can also change the number of clusters to fit in k-means clustering')),
-
+                             span(strong("Upload Input Text File(.txt format)")),
+                             'and upload the text data file.',
+                             span(strong("Upload trained udpipe model")),
+                              'To upload the trained udpipe model file.You can also change',span(strong("Part-Of-Speech Tags")),  
+                             'by selecting from the Checkbox on the left panel.' ),
+                            p('App Contributors:',span(strong("Pooja Arora (RollNo. 11810083)")), span(strong("Vikash Singh Negi (RollNo. 11810048)")))),
                   tabPanel("Cooccurance Plot for English udpipe model",
                            plotOutput("cooccurance"))
 
