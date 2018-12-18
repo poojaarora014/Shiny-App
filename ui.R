@@ -100,7 +100,7 @@ shinyUI(fluidPage(
                            p("Please note that downloaded file will not work with RStudio interface. Download will work only in web-browsers. Please open this Shiny App in a web-browser and download the example data set. For opening this dataset file in web-browser click on \"Open in Browser\" as shown below:"),
                            img(src = "image.png")),
                   
-                  tabPanel("Cooccurance Plot for English udpipe model",
+                  tabPanel("Cooccurance Plot for input udpipe model",
                            plotOutput("cooccurance"))
 
                   
