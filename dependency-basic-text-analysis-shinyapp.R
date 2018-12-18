@@ -1,29 +1,24 @@
-try(require(shiny) || install.packages("shiny"))
-try(require(text2vec) || install.packages("text2vec"))
-try(require(tm) || install.packages("tm"))
-try(require(tokenizers) || install.packages("tokenizers"))
-try(require(wordcloud) || install.packages("wordcloud"))
-try(require(slam) || install.packages("slam"))
+#Team Name:
+# Pooja Arora (RollNo. 11810083)
+# Vikash Singh Negi (RollNo. 11810048)
 
-try(require(stringi) || install.packages("stringi"))
-try(require(magrittr) || install.packages("magrittr"))
-try(require(tidytext) || install.packages("tidytext"))
-try(require(dplyr) || install.packages("dplyr"))
-try(require(tidyr) || install.packages("tidyr"))
-try(require(igraph)|| install.packages("igraph"))
+#Installing required packages for this Shiny App
 
+if (!require(udpipe)){install.packages("udpipe")}
+if (!require(textrank)){install.packages("textrank")}
+if (!require(lattice)){install.packages("lattice")}
+if (!require(igraph)){install.packages("igraph")}
+if (!require(ggraph)){install.packages("ggraph")}
+if (!require(stringr)){install.packages("stringr")}
+if (!require(ggplot2)){install.packages("ggplot2")}
+
+# Importing required packages for executing current Shiny APP
 
 library(shiny)
-library(text2vec)
-library(tm)
-library(tokenizers)
-library(wordcloud)
-library(slam)
-# Update test 123
-
-library(stringi)
-library(magrittr)
-library(tidytext)
-library(dplyr)
-library(tidyr)
+library(udpipe)
+library(textrank)
+library(lattice)
 library(igraph)
+library(ggraph)
+library(ggplot2)
+library(stringr)

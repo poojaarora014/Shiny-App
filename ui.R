@@ -5,13 +5,6 @@
 #Team Name:
 # Pooja Arora (RollNo. 11810083)
 # Vikash Singh Negi (RollNo. 11810048)
-if (!require(udpipe)){install.packages("udpipe")}
-if (!require(textrank)){install.packages("textrank")}
-if (!require(lattice)){install.packages("lattice")}
-if (!require(igraph)){install.packages("igraph")}
-if (!require(ggraph)){install.packages("ggraph")}
-if (!require(wordcloud)){install.packages("wordcloud")}
-if (!require(stringr)){install.packages("stringr")}
 
 library(shiny)
 library(udpipe)
