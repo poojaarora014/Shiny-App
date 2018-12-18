@@ -94,6 +94,12 @@ shinyUI(fluidPage(
                               'To upload the trained udpipe model file.You can also change',span(strong("Part-Of-Speech Tags")),  
                              'by selecting from the Checkbox on the left panel.' ),
                             p('App Contributors:',span(strong("Pooja Arora (RollNo. 11810083)")), span(strong("Vikash Singh Negi (RollNo. 11810048)")))),
+                  
+                  tabPanel("Example Dataset", h4(p("Download Sample text file")), 
+                           downloadButton('downloadDataSet', 'Download amazon nokia lumia reviews txt file'),br(),br(),
+                           p("Please note that downloaded file will not work with RStudio interface. Download will work only in web-browsers. Please open this Shiny App in a web-browser and download the example data set. For opening this dataset file in web-browser click on \"Open in Browser\" as shown below:"),
+                           img(src = "image.png")),
+                  
                   tabPanel("Cooccurance Plot for English udpipe model",
                            plotOutput("cooccurance"))
 

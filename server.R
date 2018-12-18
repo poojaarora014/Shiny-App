@@ -65,4 +65,13 @@ shinyServer(function(input, output) {
       
       labs(title = "Cooccurrences within 3 words distance")
   })
+  
+  output$downloadDataSet <- downloadHandler(
+    filename = function() { 
+      "amazon nokia lumia reviews.txt" 
+      },
+    content = function(file) {
+      writeLines(readLines("data/amazon nokia lumia reviews.txt"), file)
+    })
+  
 })
