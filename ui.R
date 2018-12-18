@@ -5,6 +5,14 @@
 #Team Name:
 # Pooja Arora (RollNo. 11810083)
 # Vikash Singh Negi (RollNo. 11810048)
+if (!require(udpipe)){install.packages("udpipe")}
+if (!require(textrank)){install.packages("textrank")}
+if (!require(lattice)){install.packages("lattice")}
+if (!require(igraph)){install.packages("igraph")}
+if (!require(ggraph)){install.packages("ggraph")}
+if (!require(wordcloud)){install.packages("wordcloud")}
+if (!require(stringr)){install.packages("stringr")}
+
 
 library(udpipe)
 library(textrank)
@@ -14,6 +22,22 @@ library(ggraph)
 library(ggplot2)
 library(wordcloud)
 library(stringr)
+
+library(shiny)
+library(text2vec)
+library(tm)
+library(tokenizers)
+library(wordcloud)
+library(slam)
+library(stringi)
+library(magrittr)
+library(tidytext)
+library(dplyr)
+library(tidyr)
+library(udpipe)
+library(stringr)
+library(textrank)
+library(lattice)
 library(igraph)
 library(ggraph)
 library(ggplot2)
@@ -30,13 +54,15 @@ shinyUI(fluidPage(
     sidebarPanel(
       #Input file upload option in UI 
       fileInput("file", "Upload Input Text File(.txt format)"),
-      #Model file upload option in UI 
-      fileInput("modelFile", "Upload trained udpipe model for different languages"),
+     
+       #Model file upload option in UI 
+      fileInput("modelFile", "Upload trained udpipe model for english languages"),
+
       #Check box group to select the 
       checkboxGroupInput("post", label = h3("Part-of-Speech Tags (XPOS)"), 
-                         choices = list("Adjective (JJ)" = "adjective", "Noun(NN)" = "noun", 
-                                        "Proper Noun (NNP)" = "properNoun", "Adverb (RB)"= "adverb", "Verb (VB)" ="verb"),
-                         selected = c("adjective","noun", "properNoun")),
+                         choices = list("Adjective (JJ)" = "JJ", "Noun(NN)" = "NN", 
+                                        "Proper Noun (NNP)" = "NNP", "Adverb (RB)"= "RB", "Verb (VB)" ="VB"),
+                         selected = c("JJ","NN", "NNP")),
                          hr(),
                         fluidRow(column(3, verbatimTextOutput("value"))),
       
@@ -50,18 +76,22 @@ shinyUI(fluidPage(
                   
                   tabPanel("Overview",
                            h4(p("Data input")),
-                           p("This app supports only comma separated values (.csv) data file. CSV data file should have headers and the first column of the file should have row names.",align="justify"),
-                           p("Please refer to the link below for sample csv file."),
-                           a(href="https://github.com/sudhir-voleti/sample-data-sets/blob/master/Segmentation%20Discriminant%20and%20targeting%20data/ConneCtorPDASegmentation.csv"
+                           p("This app supports only text file as input file",align="justify"),
+                           p("This app supports all language udipipe model, presently tested on English, Hindi and Spanish language only",align="justify"),
+                           p("Please refer to the link below for sample text file."),
+                           a(href="https://github.com/poojaarora014/Shiny-App/blob/master/data/amazon%20nokia%20lumia%20reviews.txt"
                              ,"Sample data input file"),   
+                           p("Please refer to the link below for sample udpipe model in English"),
+                           a(href=" https://github.com/poojaarora014/Shiny-App/blob/master/data/english-ud-2.0-170801.udpipe"
+                             ,"Sample udpipe model in English"),  
+                          
                            br(),
                            h4('How to use this App'),
                            p('To use this app, click on', 
-                             span(strong("Upload data (csv file with header)")),
+                             span(strong("Upload data (text file)")),
                              'and uppload the csv data file. You can also change the number of clusters to fit in k-means clustering')),
 
-                  tabPanel("Cooccurance",
-
+                  tabPanel("Cooccurance Plot for English udpipe model",
                            plotOutput("cooccurance"))
 
                   
