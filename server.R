@@ -37,6 +37,9 @@ shinyServer(function(input, output) {
 
   # Plotting the Co-occurrence graph for the input text file and the udpipe model
   output$cooccurance <- renderPlot({
+    # For executing on Hindi input udpipe model
+    windowsFonts(devanew=windowsFont("Devanagari new normal"))
+    
       # Reaading the checkbox group selection of XPOS from the user
     inputSelection <- input$post
     inputText <-  as.character(TextInput())
