@@ -13,35 +13,14 @@ if (!require(ggraph)){install.packages("ggraph")}
 if (!require(wordcloud)){install.packages("wordcloud")}
 if (!require(stringr)){install.packages("stringr")}
 
-
-library(udpipe)
-library(textrank)
-library(lattice)
-library(igraph)
-library(ggraph)
-library(ggplot2)
-library(wordcloud)
-library(stringr)
-
 library(shiny)
-library(text2vec)
-library(tm)
-library(tokenizers)
-library(wordcloud)
-library(slam)
-library(stringi)
-library(magrittr)
-library(tidytext)
-library(dplyr)
-library(tidyr)
 library(udpipe)
-library(stringr)
 library(textrank)
 library(lattice)
 library(igraph)
 library(ggraph)
 library(ggplot2)
-
+library(stringr)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
