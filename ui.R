@@ -30,12 +30,19 @@ shinyUI(fluidPage(
        #Model file upload option in UI 
       fileInput("modelFile", "Upload trained udpipe model"),
 
-      #Check box group to select the 
+      #Check box group to select the xpos for english
       checkboxGroupInput("post", label = h3("Part-of-Speech Tags (XPOS)"), 
                          choices = list("Adjective (JJ)" = "JJ", "Noun(NN)" = "NN", 
                                         "Proper Noun (NNP)" = "NNP", "Adverb (RB)"= "RB", "Verb (VB)" ="VB"),
                          selected = c("JJ","NN", "NNP")),
                          hr(),
+      
+      #Check box group to select the upos for non-english
+      checkboxGroupInput("upost", label = h3("Part-of-Speech Tags (UPOS) for non-english"), 
+                         choices = list("Adjective (ADJ)" = "ADJ", "Noun(NOUN)" = "NOUN", 
+                                        "Proper Noun (PRON)" = "PRON", "Adverb (RB)"= "RB", "Verb (VERB)" ="VERB"),
+                         selected = c("ADJ","NOUN", "PRON")),
+      hr(),
                         fluidRow(column(3, verbatimTextOutput("value"))),
       
       submitButton(text = "Apply Changes", icon("refresh"))
@@ -65,6 +72,7 @@ shinyUI(fluidPage(
                              span(strong("Upload trained udpipe model")),
                               'To upload the trained udpipe model file.You can also change',span(strong("Part-Of-Speech Tags")),  
                              'by selecting from the Checkbox on the left panel.' ),
+                           p('For english and non- english udpipe model Please goto appropriate tab i.e. 3rd and 4th respectively '),
                             p('App Contributors:',span(strong("Pooja Arora (RollNo. 11810083)")), span(strong("Vikash Singh Negi (RollNo. 11810048)")))),
                   
                   tabPanel("Example Dataset", h4(p("Download Sample text file")), 
@@ -72,8 +80,11 @@ shinyUI(fluidPage(
                            p("Please note that downloaded file will not work with RStudio interface. Download will work only in web-browsers. Please open this Shiny App in a web-browser and download the example data set. For opening this dataset file in web-browser click on \"Open in Browser\" as shown below:"),
                            img(src = "image.png")),
                   
-                  tabPanel("Cooccurance Plot for input udpipe model",
-                           plotOutput("cooccurance"))
+                  tabPanel("Cooccurance Plot for english input udpipe model",
+                           plotOutput("cooccurance")),
+                  
+                  tabPanel("Cooccurance Plot for non-english input udpipe model",
+                           plotOutput("cooccurance1"))
 
                   
       ) # end of tabsetPanel
