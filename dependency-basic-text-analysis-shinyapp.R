@@ -11,6 +11,7 @@ if (!require(igraph)){install.packages("igraph")}
 if (!require(ggraph)){install.packages("ggraph")}
 if (!require(stringr)){install.packages("stringr")}
 if (!require(ggplot2)){install.packages("ggplot2")}
+if (!require(wordcloud)){install.packages("wordcloud")}
 
 # Importing required packages for executing current Shiny APP
 
@@ -22,3 +23,4 @@ library(igraph)
 library(ggraph)
 library(ggplot2)
 library(stringr)
+library(wordcloud)
