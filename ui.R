@@ -14,6 +14,7 @@ library(igraph)
 library(ggraph)
 library(ggplot2)
 library(stringr)
+library(wordcloud)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(

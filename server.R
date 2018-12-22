@@ -84,7 +84,7 @@ shinyServer(function(input, output) {
     x <- as.data.frame(x)
     #Getting all the noun xpos from the input model
     allNoun = x %>% subset(., xpos %in% "NN"); allNoun$token[1:20]
-    topNoun = txt_freq(all_nouns$lemma)
+    topNoun = txt_freq(allNoun$lemma)
     
     #Ploting the word cloud
     wordcloud(words = topNoun$key, 
@@ -132,16 +132,16 @@ shinyServer(function(input, output) {
   # Plotting the word cloud for english udpipe model
   output$wordCloudUpos <- renderPlot({
 
-    # Reaading the checkbox group selection of XPOS from the user
-    inputSelection <- input$post
+    # Reaading the checkbox group selection of UPOS from the user
+    inputSelection <- input$upost
     inputText <-  as.character(TextInput())
     
     model = udpipe_load_model(file=input$modelFile$datapath)
     x <- udpipe_annotate(model, x = inputText, doc_id = seq_along(inputText))
     x <- as.data.frame(x)
-    #Getting all the noun xpos from the input model
-    allNoun = x %>% subset(., xpos %in% "NOUN"); allNoun$token[1:20]
-    topNoun = txt_freq(all_nouns$lemma)
+    #Getting all the noun upos from the input model
+    allNoun = x %>% subset(., upos %in% "NOUN"); allNoun$token[1:20]
+    topNoun = txt_freq(allNoun$lemma)
     
     #Ploting the word cloud
     wordcloud(words = topNoun$key, 
