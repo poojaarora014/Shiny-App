@@ -83,8 +83,14 @@ shinyUI(fluidPage(
                   tabPanel("Cooccurance Plot for english input udpipe model",
                            plotOutput("cooccurance")),
                   
-                  tabPanel("Cooccurance Plot for non-english input udpipe model",
-                           plotOutput("cooccurance1"))
+                  tabPanel("Word Cloud Plot for english input udpipe model",
+                           plotOutput("wordCloudXpos")),
+                  
+                  tabPanel("Cooccurance Plot for non-english udpipe model",
+                           plotOutput("cooccurance1")),
+                  
+                  tabPanel("Word Cloud Plot for non-english udpipe model",
+                           plotOutput("wordCloudUpos"))
 
                   
       ) # end of tabsetPanel

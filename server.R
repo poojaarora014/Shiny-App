@@ -69,11 +69,37 @@ shinyServer(function(input, output) {
       labs(title = "Cooccurrences within 3 words distance")
   })
   
-  # Plotting the Co-occurrence graph for the input text file and the non- english udpipe model
-  output$cooccurance1 <- renderPlot({
+  
+  # Plotting the word cloud for english udpipe model
+  output$wordCloudXpos <- renderPlot({
     # For executing on Hindi input udpipe model
      windowsFonts(devanew=windowsFont("Devanagari new normal"))
     
+    # Reaading the checkbox group selection of XPOS from the user
+    inputSelection <- input$post
+    inputText <-  as.character(TextInput())
+    
+    model = udpipe_load_model(file=input$modelFile$datapath)
+    x <- udpipe_annotate(model, x = inputText, doc_id = seq_along(inputText))
+    x <- as.data.frame(x)
+    #Getting all the noun xpos from the input model
+    allNoun = x %>% subset(., xpos %in% "NN"); allNoun$token[1:20]
+    topNoun = txt_freq(all_nouns$lemma)
+    
+    #Ploting the word cloud
+    wordcloud(words = topNoun$key, 
+              freq = topNoun$freq, 
+              min.freq = 2, 
+              max.words = 100,
+              random.order = FALSE, 
+              colors = brewer.pal(6, "Dark2"))
+
+  })
+  
+  
+  # Plotting the Co-occurrence graph for the input text file and the non- english udpipe model
+  output$cooccurance1 <- renderPlot({
+
     # Reaading the checkbox group selection of UPOS from the user
     inputSelection <- input$upost
     inputText <-  as.character(TextInput())
@@ -102,7 +128,32 @@ shinyServer(function(input, output) {
       
       labs(title = "Cooccurrences within 3 words distance")
   })
+
+  # Plotting the word cloud for english udpipe model
+  output$wordCloudUpos <- renderPlot({
+
+    # Reaading the checkbox group selection of XPOS from the user
+    inputSelection <- input$post
+    inputText <-  as.character(TextInput())
+    
+    model = udpipe_load_model(file=input$modelFile$datapath)
+    x <- udpipe_annotate(model, x = inputText, doc_id = seq_along(inputText))
+    x <- as.data.frame(x)
+    #Getting all the noun xpos from the input model
+    allNoun = x %>% subset(., xpos %in% "NOUN"); allNoun$token[1:20]
+    topNoun = txt_freq(all_nouns$lemma)
+    
+    #Ploting the word cloud
+    wordcloud(words = topNoun$key, 
+              freq = topNoun$freq, 
+              min.freq = 2, 
+              max.words = 100,
+              random.order = FALSE, 
+              colors = brewer.pal(6, "Dark2"))
+    
+  })
   
+  #Method to download the dataset
   output$downloadDataSet <- downloadHandler(
     filename = function() { 
       "amazon nokia lumia reviews.txt" 
