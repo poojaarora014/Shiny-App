@@ -6,15 +6,6 @@
 # Pooja Arora (RollNo. 11810083)
 # Vikash Singh Negi (RollNo. 11810048)
 
-library(shiny)
-library(udpipe)
-library(textrank)
-library(lattice)
-library(igraph)
-library(ggraph)
-library(ggplot2)
-library(stringr)
-library(wordcloud)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
